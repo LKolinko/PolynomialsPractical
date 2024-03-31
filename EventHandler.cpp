@@ -50,6 +50,17 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
             }
         }
     }
+    if (event.type == sf::Event::Resized) {
+        sf::Vector2u windowSize = sf::Vector2u(event.size.width, event.size.height);
+        wnd->setView(sf::View(sf::Vector2f((float) windowSize.x / 2.f, (float) windowSize.y / 2.f),
+                              sf::Vector2f(windowSize)));
+        for (int i = 0; i < (int)buttonsSettings_.size(); ++i) {
+            auto u = buttonsSettings_[i];
+            buttons_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
+            buttons_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
+        }
+        IsUpdate = true;
+    }
     if (IsUpdate) {
         ReWrite(wnd);
     }
@@ -68,7 +79,8 @@ void EventHandler::ReWrite(sf::RenderWindow *wnd) {
     wnd->display();
 }
 
-EventHandler::EventHandler(std::vector<Button*> buttons) {
+EventHandler::EventHandler(std::vector<Button*> buttons, std::vector<std::vector<float>> buttonsSettings) {
     buttons_ = std::move(buttons);
+    buttonsSettings_ = std::move(buttonsSettings);
 }
 

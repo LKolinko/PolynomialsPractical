@@ -27,7 +27,7 @@ Button::Button(sf::Vector2f size, sf::Vector2f pos, sf::Color Back, sf::Color Ot
 
     btnWidth = size.x;
     btnHeight = size.y;
-    button.Create(Back, size, pos, radius);
+    button = RoundedRectangle(Back, size, pos, radius);
 
     text.setString(btnText);
     text.setCharacterSize(button.vertic.getLocalBounds().height / 3);
@@ -38,6 +38,7 @@ Button::Button(sf::Vector2f size, sf::Vector2f pos, sf::Color Back, sf::Color Ot
     float yPos = (pos.y + btnHeight / 2.7) - (text.getLocalBounds().height / 2);
 
     text.setPosition(xPos, yPos);
+    position_ = pos;
 }
 
 void Button::SetOtherColor() {
@@ -60,4 +61,22 @@ int Button::getColor() {
 
 void Button::SetSimpleColor() {
     button.SetColor(Color_);
+}
+
+void Button::SetSize(sf::Vector2f size) {
+    btnWidth = size.x;
+    btnHeight = size.y;
+    button.SetSize(size);
+    text.setCharacterSize(button.vertic.getLocalBounds().height / 3);
+    float xPos = (position_.x + btnWidth / 2) - (text.getLocalBounds().width / 2);
+    float yPos = (position_.y + btnHeight / 2.7) - (text.getLocalBounds().height / 2);
+    text.setPosition(xPos, yPos);
+}
+
+void Button::SetPosition(sf::Vector2f pos) {
+    position_ = pos;
+    button.SetPosition(pos);
+    float xPos = (position_.x + btnWidth / 2) - (text.getLocalBounds().width / 2);
+    float yPos = (position_.y + btnHeight / 2.7) - (text.getLocalBounds().height / 2);
+    text.setPosition(xPos, yPos);
 }

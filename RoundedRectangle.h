@@ -6,7 +6,8 @@ public:
     RoundedRectangle() = default;
     RoundedRectangle(sf::Color color, sf::Vector2f size, sf::Vector2f pos, float radius);
     ~RoundedRectangle() = default;
-    void Create(sf::Color color, sf::Vector2f size, sf::Vector2f pos, float radius);
+    void SetSize(sf::Vector2f size);
+    void SetPosition(sf::Vector2f pos);
     void Draw(sf::RenderWindow& wnd);
     void Draw(sf::RenderTexture& wnd);
     void SetColor(sf::Color color);
@@ -14,5 +15,6 @@ public:
     sf::Vector2f position;
     sf::Color getColor();
 private:
+    sf::Vector2f size_;
     sf::CircleShape LU, RU, LD, RD;
 };

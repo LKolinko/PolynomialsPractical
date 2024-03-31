@@ -10,6 +10,8 @@ public:
     void SetOtherColor();
     void SetPassedColor();
     void SetSimpleColor();
+    void SetSize(sf::Vector2f size);
+    void SetPosition(sf::Vector2f pos);
     void Draw(sf::RenderWindow& window);
     bool isMouseOver(sf::RenderWindow& window);
     int getColor();
@@ -20,7 +22,7 @@ private:
     sf::Color Other_;
     // Font;
     sf::Font font_;
-    bool is_cliced = false;
+    sf::Vector2f position_;
     RoundedRectangle button;
     sf::Text text;
     int btnWidth;

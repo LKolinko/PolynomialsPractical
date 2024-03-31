@@ -15,6 +15,8 @@ public:
         buttonOther = sf::Color(111, 146, 131);
         buttonPassed = sf::Color(105, 109, 125);
         button = sf::Color(141, 159, 135);
+        textBoxPassed = sf::Color(233, 198, 165);
+        textBox = sf::Color(205, 198, 165);
         font.loadFromFile("Arial.ttf");
     }
 private:

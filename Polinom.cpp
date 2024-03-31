@@ -38,37 +38,31 @@ Polinom::Polinom(const Polinom &other) {
 
 Polinom Polinom::operator+(Polinom other) {
     Polinom res;
-    auto u = data_.getRoot();
-    for (; u != nullptr; u = u->next) {
-        bool flag = true;
-        for (auto e = other.data_.getRoot(); e != nullptr; e = e->next) {
-            if (u->val.alph == e->val.alph) {
-                node a = u->val;
-                a.k += e->val.k;
-                flag = false;
-                if (a.k != 0) {
-                    res.data_.PushBack(a);
-                    break;
-                }
+    auto first = this->data_.getRoot();
+    auto second = other.data_.getRoot();
+    while (first != nullptr && second != nullptr) {
+        if (first->val.alph == second->val.alph) {
+            if (first->val.k + second->val.k != 0) {
+                res.data_.PushBack(first->val + second->val);
             }
-        }
-        if (flag) {
-            res.data_.PushBack(u->val);
+            first = first->next;
+            second = second->next;
+        } else if (first->val > second->val) {
+            res.data_.PushBack(first->val);
+            first = first->next;
+        } else {
+            res.data_.PushBack(second->val);
+            second = second->next;
         }
     }
-    for (auto e = other.data_.getRoot(); e != nullptr; e = e->next) {
-        bool flag = true;
-        for (u = data_.getRoot(); u != nullptr; u = u->next) {
-            if (u->val.alph == e->val.alph) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            res.data_.PushBack(e->val);
-        }
+    while (first != nullptr) {
+        res.data_.PushBack(first->val);
+        first = first->next;
     }
-    res.data_.Sort();
+    while (second != nullptr) {
+        res.data_.PushBack(second->val);
+        second = second->next;
+    }
     return res;
 }
 

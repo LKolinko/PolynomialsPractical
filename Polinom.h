@@ -89,6 +89,11 @@ private:
             }
             return res;
         }
+        node operator+(node& other) {
+            node res = *this;
+            res.k += other.k;
+            return res;
+        }
         node operator*(int num) {
             node res;
             res.k = k * num;

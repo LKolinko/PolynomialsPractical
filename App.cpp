@@ -17,12 +17,20 @@ App::App() {
             { 0.01, 0.56, 0.3, 0.15 }, //(/)
             { 0.01, 0.73, 0.3, 0.15 }, // Proisz
     };
+    buttonsTitles_ = {
+            "add",
+            "* + *",
+            "* - *",
+            "* * *",
+            "* / *"
+    };
     sf::Vector2u size = window->getSize();
-    for (auto u : ButtonSettings) {
+    for (int i = 0; i < (int)ButtonSettings.size(); ++i) {
+        auto u = ButtonSettings[i];
         Button* bnt = new Button({ (float)size.x * u[2], (float)size.y * u[3] },
                                  { (float)size.x * u[0], (float)size.y * u[1] },
                                  locale_.button, locale_.buttonOther,
-                                 locale_.buttonPassed, locale_.font, "Button", 10);
+                                 locale_.buttonPassed, locale_.font, buttonsTitles_[i], 10);
         buttons_.push_back(bnt);
     }
     eventHandler = EventHandler(buttons_);

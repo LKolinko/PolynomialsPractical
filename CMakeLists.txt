@@ -28,6 +28,7 @@ add_executable(PolinomPractice main.cpp
         TextBox.cpp
         TextBox.cpp
         TextBox.cpp
-        Table.cpp)
+        Table.cpp
+        TwoLinkedList.h)
 
 target_link_libraries(PolinomPractice PRIVATE sfml-graphics)

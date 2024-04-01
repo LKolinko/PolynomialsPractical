@@ -15,6 +15,8 @@ public:
     std::vector<std::string> get_data();
     std::string getCell(int i);
     void PushBack(std::string str);
+    void SetSize(sf::Vector2f size);
+    void SetPosition(sf::Vector2f position);
     void Remove(int ind);
 private:
     float maxSize;

@@ -86,3 +86,14 @@ void Table::PushBack(std::string str) {
     maxSize = std::max(maxSize, text.getLocalBounds().width);
     data.push_back(str);
 }
+
+void Table::SetSize(sf::Vector2f size) {
+    out.SetSize(size);
+    in.SetSize(sf::Vector2f({ size.x - ft * 2, size.y - ft * 2 }));
+}
+
+void Table::SetPosition(sf::Vector2f pos) {
+    position = { pos.x + ft / 2, pos.y + ft / 2 };
+    out.SetPosition(pos);
+    in.SetPosition(sf::Vector2f({ pos.x + ft, pos.y + ft }));
+}

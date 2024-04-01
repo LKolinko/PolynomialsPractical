@@ -67,8 +67,6 @@ App::App() {
                        locale_.tableOut, locale_.tableIn, 10, 10, { tableSettings_[4], tableSettings_[5] },
                        locale_.font);
 
-    table_->PushBack("huyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuy");
-
     eventHandler = EventHandler(buttons_, ButtonSettings, texboxs_, textboxSettings_, table_, tableSettings_);
 }
 

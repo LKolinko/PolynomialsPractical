@@ -75,6 +75,8 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
             textboxs_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
             textboxs_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
         }
+        table_->SetSize({ (float)windowSize.x * tableSettings_[2], (float)windowSize.y * tableSettings_[3] });
+        table_->SetPosition({ (float)windowSize.x * tableSettings_[0], (float)windowSize.y * tableSettings_[1] });
         IsUpdate = true;
     }
     if (event.type == sf::Event::TextEntered) {

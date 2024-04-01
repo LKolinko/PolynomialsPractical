@@ -41,6 +41,17 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
                 u->SetPassedColor();
             }
         }
+        for (auto u : textboxs_) {
+            if (u->isMousOver(*wnd)) {
+                if (u->getColor() != 1) {
+                    IsUpdate = true;
+                }
+                u->SetPressed();
+            } else if (u->getColor() == 1) {
+                IsUpdate = true;
+                u->SetSimple();
+            }
+        }
     }
     if (event.type == sf::Event::MouseButtonReleased) {
         for (auto u : buttons_) {
@@ -59,6 +70,11 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
             buttons_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
             buttons_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
         }
+        for (int i = 0; i < (int)textboxsSettings_.size(); ++i) {
+            auto u = textboxsSettings_[i];
+            textboxs_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
+            textboxs_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
+        }
         IsUpdate = true;
     }
     if (IsUpdate) {
@@ -67,7 +83,7 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
 }
 
 void EventHandler::ReWrite(sf::RenderWindow *wnd) {
-    std::cout << 1 << std::endl;
+    std::cout << "UPD" << '\n';
 
     wnd->clear(sf::Color::White);
 
@@ -75,12 +91,19 @@ void EventHandler::ReWrite(sf::RenderWindow *wnd) {
     for (auto u : buttons_) {
         u->Draw(*wnd);
     }
+    // Textboxs Rewrite
+    for (auto u : textboxs_) {
+        u->Draw(*wnd);
+    }
 
     wnd->display();
 }
 
-EventHandler::EventHandler(std::vector<Button*> buttons, std::vector<std::vector<float>> buttonsSettings) {
+EventHandler::EventHandler(std::vector<Button *> buttons, std::vector<std::vector<float>> buttonsSettings,
+                           std::vector<TextBox *> Textboxs, std::vector<std::vector<float>> TextboxsSettings) {
     buttons_ = std::move(buttons);
     buttonsSettings_ = std::move(buttonsSettings);
+    textboxs_ = std::move(Textboxs);
+    textboxsSettings_ = std::move(TextboxsSettings);
 }
 

@@ -1,6 +1,8 @@
 #include "TextBox.h"
-void TextBox::Create(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::Font &font, std::string str_title,
-                     float radius) {
+
+TextBox::TextBox(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::Color pressed, sf::Font &font,
+                 std::string str_title, float radius) {
+
     back = RoundedRectangle(color, size, pos, radius);
     TextBoxWidth = size.x;
     TextBoxHeight = size.y;
@@ -10,6 +12,10 @@ void TextBox::Create(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::F
     } else {
         is_title = true;
     }
+
+    color_ = color;
+    pressed_ = pressed;
+    font_ = font;
 
     title.setString(str_title);
     title.setFillColor(sf::Color::Black);
@@ -29,13 +35,14 @@ void TextBox::Create(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::F
     text_.setFillColor(sf::Color::Black);
 
     position = pos;
-    ft = radius;
+    radius_ = radius;
 }
+
 void TextBox::Draw(sf::RenderWindow& wnd) {
     sf::RenderTexture textbox;
 
-    textbox.create(static_cast<unsigned int>(back.horisont.getLocalBounds().width - ft / 2 - 5),
-                 static_cast<unsigned int>(back.vertic.getLocalBounds().height / (is_title ? 2.5 : 1) - (is_title ? 0 : ft)));
+    textbox.create(static_cast<unsigned int>(back.horisont.getLocalBounds().width - radius_ / 2 - 5),
+                 static_cast<unsigned int>(back.vertic.getLocalBounds().height / (is_title ? 2.5 : 1) - (is_title ? 0 : radius_)));
     textbox.clear(back.getColor());
 
     back.Draw(wnd);
@@ -51,14 +58,14 @@ void TextBox::Draw(sf::RenderWindow& wnd) {
     if (is_title) {
         sprite.setPosition(position.x + 5, position.y + TextBoxHeight / 2.7 );
     } else {
-        sprite.setPosition(position.x + ft / 2, position.y + ft / 2);
+        sprite.setPosition(position.x + radius_ / 2, position.y + radius_ / 2);
 
     }
     wnd.draw(sprite);
 }
 
 std::string TextBox::get_text() {
-    return str_;
+    return data_;
 }
 
 bool TextBox::isMousOver(sf::RenderWindow& wnd) {
@@ -72,7 +79,45 @@ bool TextBox::isMousOver(sf::RenderWindow& wnd) {
 }
 
 void TextBox::Clear() {
-    str_.clear();
-    text_.setString(str_);
+    data_.clear();
+    text_.setString(data_);
 }
+
+void TextBox::SetSize(sf::Vector2f size) {
+    back.SetSize(size);
+    TextBoxWidth = size.x;
+    TextBoxHeight = size.y;
+    title.setCharacterSize(back.vertic.getLocalBounds().height / 3.5);
+    float xPos = position.x + 5;
+    float yPos = (position.y + TextBoxHeight / 2.7);
+    text_.setPosition(xPos, yPos);
+    if (is_title) {
+        text_.setCharacterSize(back.vertic.getLocalBounds().height / 3);
+    } else {
+        text_.setCharacterSize(back.vertic.getLocalBounds().height / 2);
+    }
+    title.setCharacterSize(back.vertic.getLocalBounds().height / 3.5);
+}
+
+void TextBox::SetPosition(sf::Vector2f pos) {
+    position = pos;
+    back.SetPosition(pos);
+    title.setPosition({ pos.x + 5, pos.y });
+    float xPos = pos.x + 5;
+    float yPos = (pos.y + TextBoxHeight / 2.7);
+    text_.setPosition(xPos, yPos);
+}
+
+void TextBox::SetPressed() {
+    back.SetColor(pressed_);
+}
+
+void TextBox::SetSimple() {
+    back.SetColor(color_);
+}
+
+int TextBox::getColor() {
+    return back.getColor() == pressed_;
+}
+
 

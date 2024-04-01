@@ -5,21 +5,30 @@
 
 class TextBox {
 public:
-    void Create(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::Font& font, std::string title, float radius);
+    TextBox(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::Color pressed, sf::Font& font, std::string title, float radius);
+    void SetPressed();
+    void SetSimple();
+    int getColor();
+    void SetSize(sf::Vector2f size);
+    void SetPosition(sf::Vector2f pos);
     bool isMousOver(sf::RenderWindow& wnd);
     void Draw(sf::RenderWindow& wnd);
     void Clear();
     std::string get_text();
 private:
     bool is_title = true;
-    float ft;
+    float radius_;
     sf::Vector2f position;
     int start = 0;
     int TextBoxWidth;
     int TextBoxHeight;
-    bool is_active = false;
     RoundedRectangle back;
-    std::string str_;
+    std::string data_;
     sf::Text text_;
     sf::Text title;
+
+    sf::Font font_;
+
+    sf::Color color_;
+    sf::Color pressed_;
 };

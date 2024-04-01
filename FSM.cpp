@@ -13,7 +13,7 @@ std::pair<std::vector<int>, int> FSM::getNode() {
     std::vector<int> alph(26, 0);
     int k = -1, sign = 1, cnt = 0;
     char teck = '/';
-    while (true && ind != str_.size()) {
+    while (ind != str_.size()) {
         if (state == 0) {
             if (str_[ind] == '-') {
                 state = 1;

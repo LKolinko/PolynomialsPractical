@@ -13,6 +13,9 @@ private:
     EventHandler eventHandler;
     sf::RenderWindow* window;
     std::vector<Button*> buttons_;
+    std::vector<TextBox*> texboxs_;
+    std::vector<std::string> texboxTitles_;
+    std::vector<std::vector<float>> textboxSettings_;
     std::vector<std::string> buttonsTitles_;
     std::vector<std::vector<float>> ButtonSettings;
 };

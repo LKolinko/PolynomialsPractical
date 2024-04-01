@@ -27,6 +27,7 @@ add_executable(PolinomPractice main.cpp
         Button.cpp
         TextBox.cpp
         TextBox.cpp
-        TextBox.cpp)
+        TextBox.cpp
+        Table.cpp)
 
 target_link_libraries(PolinomPractice PRIVATE sfml-graphics)

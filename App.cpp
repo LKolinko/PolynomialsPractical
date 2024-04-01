@@ -60,7 +60,16 @@ App::App() {
                                    locale_.textBox, locale_.textBoxPassed, locale_.font, texboxTitles_[i], 10);
         texboxs_.push_back(text);
     }
-    eventHandler = EventHandler(buttons_, ButtonSettings, texboxs_, textboxSettings_);
+    // table
+    tableSettings_ = { 0.33, 0.25, 0.65, 0.7, 100, 50 };
+    table_ = new Table({ (float)size.x * tableSettings_[2], (float)size.y * tableSettings_[3] },
+                       { (float)size.x * tableSettings_[0], (float)size.y * tableSettings_[1] },
+                       locale_.tableOut, locale_.tableIn, 10, 10, { tableSettings_[4], tableSettings_[5] },
+                       locale_.font);
+
+    table_->PushBack("huyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuyhuy");
+
+    eventHandler = EventHandler(buttons_, ButtonSettings, texboxs_, textboxSettings_, table_, tableSettings_);
 }
 
 App::~App() {
@@ -70,4 +79,5 @@ App::~App() {
     for (auto u : texboxs_) {
         delete u;
     }
+    delete table_;
 }

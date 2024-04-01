@@ -77,6 +77,33 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
         }
         IsUpdate = true;
     }
+    if (event.type == sf::Event::TextEntered) {
+        for (int i = 0; i < (int)textboxs_.size(); ++i) {
+            if (textboxs_[i]->getColor() == 1) {
+                if (event.key.code == 13) {
+                    textboxs_[i]->SetSimple();
+                } else {
+                    if (event.key.code == 8 || event.key.code == 127) {
+                        textboxs_[i]->RemoveSimbol();
+                    } else {
+                        char c = static_cast<char>(event.key.code);
+                        textboxs_[i]->AddSimbol(c);
+                    }
+                }
+                IsUpdate = true;
+            }
+        }
+    }
+    if (event.type == sf::Event::MouseWheelScrolled) {
+        if (table_->isMouseOver(*wnd)) {
+            if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+                table_->Scroll(std::make_pair((int) event.mouseWheelScroll.delta, 0));
+            } else if (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel) {
+                table_->Scroll(std::make_pair(0, (int) event.mouseWheelScroll.delta));
+            }
+            IsUpdate = true;
+        }
+    }
     if (IsUpdate) {
         ReWrite(wnd);
     }
@@ -95,15 +122,19 @@ void EventHandler::ReWrite(sf::RenderWindow *wnd) {
     for (auto u : textboxs_) {
         u->Draw(*wnd);
     }
-
+    // Table Rewrite
+    table_->Draw(*wnd);
     wnd->display();
 }
 
-EventHandler::EventHandler(std::vector<Button *> buttons, std::vector<std::vector<float>> buttonsSettings,
-                           std::vector<TextBox *> Textboxs, std::vector<std::vector<float>> TextboxsSettings) {
+EventHandler::EventHandler(std::vector<Button*> buttons, std::vector<std::vector<float>> buttonsSettings,
+                           std::vector<TextBox*> Textboxs, std::vector<std::vector<float>> TextboxsSettings,
+                           Table* table, std::vector<float> tableSettings) {
     buttons_ = std::move(buttons);
     buttonsSettings_ = std::move(buttonsSettings);
     textboxs_ = std::move(Textboxs);
     textboxsSettings_ = std::move(TextboxsSettings);
+    table_ = std::move(table);
+    tableSettings_ = std::move(tableSettings);
 }
 

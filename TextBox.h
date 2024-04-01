@@ -11,6 +11,8 @@ public:
     int getColor();
     void SetSize(sf::Vector2f size);
     void SetPosition(sf::Vector2f pos);
+    void AddSimbol(char a);
+    void RemoveSimbol();
     bool isMousOver(sf::RenderWindow& wnd);
     void Draw(sf::RenderWindow& wnd);
     void Clear();

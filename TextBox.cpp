@@ -120,4 +120,18 @@ int TextBox::getColor() {
     return back.getColor() == pressed_;
 }
 
+void TextBox::AddSimbol(char a) {
+    data_.push_back(a);
+    text_.setString(data_);
+}
+
+void TextBox::RemoveSimbol() {
+    if (data_.empty()) {
+        return;
+    }
+    data_.pop_back();
+    text_.setString(data_);
+}
+
+
 

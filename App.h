@@ -12,6 +12,8 @@ private:
     Locale locale_;
     EventHandler eventHandler;
     sf::RenderWindow* window;
+    Table* table_;
+    std::vector<float> tableSettings_;
     std::vector<Button*> buttons_;
     std::vector<TextBox*> texboxs_;
     std::vector<std::string> texboxTitles_;

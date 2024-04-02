@@ -19,9 +19,10 @@ App::App() {
             { 0.165, 0.37, 0.145, 0.1 },
             { 0.01, 0.49, 0.145, 0.1 },
             { 0.165, 0.49, 0.145, 0.1 },
-            { 0.01, 0.61, 0.3, 0.1 },
+            { 0.01, 0.61, 0.145, 0.1 },
             { 0.33, 0.01, 0.2, 0.1 },
             { 0.33, 0.13, 0.2, 0.1 },
+            { 0.165, 0.61, 0.145, 0.1 },
     };
     buttonsTitles_ = {
             "value at point",
@@ -34,6 +35,7 @@ App::App() {
             "a / b",
             "add",
             "add",
+            "del",
     };
     sf::Vector2u size = Screen::GetInstance()->window->getSize();
     for (int i = 0; i < (int)ButtonSettings.size(); ++i) {

@@ -58,7 +58,9 @@ template<typename T>
 void TwoLinkedList<T>::EraseHead() {
     auto u = root;
     root = root->next;
-    root->prev = nullptr;
+    if (root) {
+        root->prev = nullptr;
+    }
     delete u;
 }
 

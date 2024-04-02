@@ -6,6 +6,7 @@
 #include "Database.h"
 #include <iostream>
 #include <utility>
+#include <sstream>
 
 void EventHandler::scan(sf::RenderWindow *wnd) {
     sf::Event event{};
@@ -38,8 +39,17 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
             auto u = Locale::GetInstance()->buttons_[i];
             if (u->isMouseOver(*wnd)) {
                 if (u->getColor() != 2) {
+                    if (i == 0) ValueInPoint();
+                    if (i == 1) Derivative();
                     if (i == 2) GetRoots();
+                    if (i == 3) Comparison();
+                    if (i == 4) Addition();
+                    if (i == 5) Subtraction();
+                    if (i == 6) Multiplication();
+                    if (i == 7) Division();
                     if (i == 8) AddPolinom();
+                    if (i == 9) Addition();
+                    if (i == 10) Delete();
                     IsUpdate = true;
                 }
                 u->SetPassedColor();
@@ -169,5 +179,108 @@ void EventHandler::GetRoots() {
         text.push_back(' ');
     }
     Locale::GetInstance()->texboxs_[1]->SetText(text);
+}
+
+void EventHandler::Delete() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.empty()) {
+        return;
+    }
+    Locale::GetInstance()->table_->Remove(ind.front());
+    Database::GetInstance()->Erase(ind.front());
+}
+
+void EventHandler::Comparison() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.size() < 2) {
+        return;
+    }
+    Polinom first = Database::GetInstance()->GetPolinom(ind[0]);
+    Polinom second = Database::GetInstance()->GetPolinom(ind[1]);
+    std::string ans;
+    if (first == second) {
+        ans = "YES";
+    } else {
+        ans = "NO";
+    }
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::Addition() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.size() < 2) {
+        return;
+    }
+    Polinom first = Database::GetInstance()->GetPolinom(ind[0]);
+    Polinom second = Database::GetInstance()->GetPolinom(ind[1]);
+    first += second;
+    std::string ans;
+    ans = first.ToString();
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::Subtraction() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.size() < 2) {
+        return;
+    }
+    Polinom first = Database::GetInstance()->GetPolinom(ind[0]);
+    Polinom second = Database::GetInstance()->GetPolinom(ind[1]);
+    first -= second;
+    std::string ans;
+    ans = first.ToString();
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::Multiplication() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.size() < 2) {
+        return;
+    }
+    Polinom first = Database::GetInstance()->GetPolinom(ind[0]);
+    Polinom second = Database::GetInstance()->GetPolinom(ind[1]);
+    first *= second;
+    std::string ans;
+    ans = first.ToString();
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::ValueInPoint() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.empty()) {
+        return;
+    }
+    std::string str = Locale::GetInstance()->texboxs_[0]->get_text();
+
+    std::stringstream ss(str);
+    std::vector<int> values(26);
+    for (int i = 0; i < 26; ++i) {
+        ss >> values[i];
+    }
+
+    Polinom polinom = Database::GetInstance()->GetPolinom(ind[0]);
+    std::string ans = std::to_string(polinom.ValueInPoint(values));
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::Derivative() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.empty()) {
+        return;
+    }
+    std::string str = Locale::GetInstance()->texboxs_[0]->get_text();
+
+    std::stringstream ss(str);
+    int n;
+    char x;
+    ss >> n >> x;
+    Polinom polinom = Database::GetInstance()->GetPolinom(ind[0]);
+    polinom = polinom.Derivative(n, x);
+    std::string ans = polinom.ToString();
+    Locale::GetInstance()->texboxs_[1]->SetText(ans);
+}
+
+void EventHandler::Division() {
+
 }
 

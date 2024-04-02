@@ -123,3 +123,7 @@ void Table::FillCeil(sf::RenderWindow* wnd) {
 std::vector<int> Table::GetFill() {
     return fill;
 }
+
+void Table::Remove(int ind) {
+    data.erase(data.begin() + ind);
+}

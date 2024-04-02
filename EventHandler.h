@@ -16,6 +16,14 @@ public:
 private:
     void AddPolinom();
     void GetRoots();
+    void Delete();
+    void Comparison();
+    void Addition();
+    void Subtraction();
+    void Multiplication();
+    void ValueInPoint();
+    void Derivative();
+    void Division();
 
     void Update_(sf::RenderWindow* wnd, sf::Event& event);
     std::vector<float> tableSettings_;

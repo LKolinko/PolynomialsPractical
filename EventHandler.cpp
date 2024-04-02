@@ -19,7 +19,7 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
     // some widgets updates
     bool IsUpdate = false;
     if (event.type == sf::Event::MouseMoved) {
-        for (auto u : buttons_) {
+        for (auto u : Locale::GetInstance()->buttons_) {
             if (u->isMouseOver(*wnd)) {
                 if (u->getColor() != 1) {
                     IsUpdate = true;
@@ -32,8 +32,8 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
         }
     }
     if (event.type == sf::Event::MouseButtonPressed) {
-        for (int i = 0; i < (int)buttons_.size(); ++i) {
-            auto u = buttons_[i];
+        for (int i = 0; i < (int)Locale::GetInstance()->buttons_.size(); ++i) {
+            auto u = Locale::GetInstance()->buttons_[i];
             if (u->isMouseOver(*wnd)) {
                 if (u->getColor() != 2) {
                     IsUpdate = true;
@@ -41,7 +41,7 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
                 u->SetPassedColor();
             }
         }
-        for (auto u : textboxs_) {
+        for (auto u : Locale::GetInstance()->texboxs_) {
             if (u->isMousOver(*wnd)) {
                 if (u->getColor() != 1) {
                     IsUpdate = true;
@@ -54,7 +54,7 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
         }
     }
     if (event.type == sf::Event::MouseButtonReleased) {
-        for (auto u : buttons_) {
+        for (auto u : Locale::GetInstance()->buttons_) {
             if (u->getColor() == 2) {
                 u->SetSimpleColor();
                 IsUpdate = true;
@@ -67,29 +67,29 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
                               sf::Vector2f(windowSize)));
         for (int i = 0; i < (int)buttonsSettings_.size(); ++i) {
             auto u = buttonsSettings_[i];
-            buttons_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
-            buttons_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
+            Locale::GetInstance()->buttons_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
+            Locale::GetInstance()->buttons_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
         }
         for (int i = 0; i < (int)textboxsSettings_.size(); ++i) {
             auto u = textboxsSettings_[i];
-            textboxs_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
-            textboxs_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
+            Locale::GetInstance()->texboxs_[i]->SetSize({ (float)windowSize.x * u[2], (float)windowSize.y * u[3] });
+            Locale::GetInstance()->texboxs_[i]->SetPosition({ (float)windowSize.x * u[0], (float)windowSize.y * u[1] });
         }
-        table_->SetSize({ (float)windowSize.x * tableSettings_[2], (float)windowSize.y * tableSettings_[3] });
-        table_->SetPosition({ (float)windowSize.x * tableSettings_[0], (float)windowSize.y * tableSettings_[1] });
+        Locale::GetInstance()->table_->SetSize({ (float)windowSize.x * tableSettings_[2], (float)windowSize.y * tableSettings_[3] });
+        Locale::GetInstance()->table_->SetPosition({ (float)windowSize.x * tableSettings_[0], (float)windowSize.y * tableSettings_[1] });
         IsUpdate = true;
     }
     if (event.type == sf::Event::TextEntered) {
-        for (int i = 0; i < (int)textboxs_.size(); ++i) {
-            if (textboxs_[i]->getColor() == 1) {
+        for (int i = 0; i < (int)Locale::GetInstance()->texboxs_.size(); ++i) {
+            if (Locale::GetInstance()->texboxs_[i]->getColor() == 1) {
                 if (event.key.code == 13) {
-                    textboxs_[i]->SetSimple();
+                    Locale::GetInstance()->texboxs_[i]->SetSimple();
                 } else {
                     if (event.key.code == 8 || event.key.code == 127) {
-                        textboxs_[i]->RemoveSimbol();
+                        Locale::GetInstance()->texboxs_[i]->RemoveSimbol();
                     } else {
                         char c = static_cast<char>(event.key.code);
-                        textboxs_[i]->AddSimbol(c);
+                        Locale::GetInstance()->texboxs_[i]->AddSimbol(c);
                     }
                 }
                 IsUpdate = true;
@@ -97,11 +97,11 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
         }
     }
     if (event.type == sf::Event::MouseWheelScrolled) {
-        if (table_->isMouseOver(*wnd)) {
+        if (Locale::GetInstance()->table_->isMouseOver(*wnd)) {
             if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
-                table_->Scroll(std::make_pair((int) event.mouseWheelScroll.delta, 0));
+                Locale::GetInstance()->table_->Scroll(std::make_pair((int) event.mouseWheelScroll.delta, 0));
             } else if (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel) {
-                table_->Scroll(std::make_pair(0, (int) event.mouseWheelScroll.delta));
+                Locale::GetInstance()->table_->Scroll(std::make_pair(0, (int) event.mouseWheelScroll.delta));
             }
             IsUpdate = true;
         }
@@ -117,26 +117,24 @@ void EventHandler::ReWrite(sf::RenderWindow *wnd) {
     wnd->clear(sf::Color::White);
 
     // Buttons Rewrite
-    for (auto u : buttons_) {
+    for (auto u : Locale::GetInstance()->buttons_) {
         u->Draw(*wnd);
     }
     // Textboxs Rewrite
-    for (auto u : textboxs_) {
+    for (auto u : Locale::GetInstance()->texboxs_) {
         u->Draw(*wnd);
     }
     // Table Rewrite
-    table_->Draw(*wnd);
+    Locale::GetInstance()->table_->Draw(*wnd);
     wnd->display();
 }
 
-EventHandler::EventHandler(std::vector<Button*> buttons, std::vector<std::vector<float>> buttonsSettings,
-                           std::vector<TextBox*> Textboxs, std::vector<std::vector<float>> TextboxsSettings,
-                           Table* table, std::vector<float> tableSettings) {
-    buttons_ = std::move(buttons);
-    buttonsSettings_ = std::move(buttonsSettings);
-    textboxs_ = std::move(Textboxs);
-    textboxsSettings_ = std::move(TextboxsSettings);
-    table_ = std::move(table);
-    tableSettings_ = std::move(tableSettings);
+EventHandler::EventHandler(std::vector<std::vector<float>>& buttonsSettings,
+                           std::vector<std::vector<float>>& TextboxsSettings,
+                           std::vector<float>& tableSettings) {
+    buttonsSettings_ = buttonsSettings;
+    textboxsSettings_ = TextboxsSettings;
+    tableSettings_ = tableSettings;
 }
+
 

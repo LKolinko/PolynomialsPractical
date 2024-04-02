@@ -1,15 +1,15 @@
 #include "App.h"
 
 void App::run() {
-    while (window->isOpen()) {
-        eventHandler.scan(window);
+    while (Screen::GetInstance()->window->isOpen()) {
+        eventHandler.scan(Screen::GetInstance()->window);
     }
 }
 
 App::App() {
     Screen::GetInstance()->Init();
-    window = Screen::GetInstance()->window;
-    window->clear(sf::Color::White);
+    Locale::GetInstance()->Init();
+    Screen::GetInstance()->window->clear(sf::Color::White);
     // buttons
     ButtonSettings = {
             { 0.01, 0.01, 0.3, 0.1 },
@@ -35,14 +35,14 @@ App::App() {
             "add",
             "add",
     };
-    sf::Vector2u size = window->getSize();
+    sf::Vector2u size = Screen::GetInstance()->window->getSize();
     for (int i = 0; i < (int)ButtonSettings.size(); ++i) {
         auto u = ButtonSettings[i];
         Button* bnt = new Button({ (float)size.x * u[2], (float)size.y * u[3] },
                                  { (float)size.x * u[0], (float)size.y * u[1] },
-                                 locale_.button, locale_.buttonOther,
-                                 locale_.buttonPassed, locale_.font, buttonsTitles_[i], 10);
-        buttons_.push_back(bnt);
+                                 Locale::GetInstance()->button, Locale::GetInstance()->buttonOther,
+                                 Locale::GetInstance()->buttonPassed, Locale::GetInstance()->font, buttonsTitles_[i], 10);
+        Locale::GetInstance()->buttons_.push_back(bnt);
     }
     // textboxs
     textboxSettings_ = {
@@ -57,25 +57,15 @@ App::App() {
         auto u = textboxSettings_[i];
         TextBox* text = new TextBox({ (float)size.x * u[2], (float)size.y * u[3] },
                                    { (float)size.x * u[0], (float)size.y * u[1] },
-                                   locale_.textBox, locale_.textBoxPassed, locale_.font, texboxTitles_[i], 10);
-        texboxs_.push_back(text);
+                                   Locale::GetInstance()->textBox, Locale::GetInstance()->textBoxPassed, Locale::GetInstance()->font, texboxTitles_[i], 10);
+        Locale::GetInstance()->texboxs_.push_back(text);
     }
     // table
     tableSettings_ = { 0.33, 0.25, 0.65, 0.7, 100, 50 };
-    table_ = new Table({ (float)size.x * tableSettings_[2], (float)size.y * tableSettings_[3] },
+    Locale::GetInstance()->table_ = new Table({ (float)size.x * tableSettings_[2], (float)size.y * tableSettings_[3] },
                        { (float)size.x * tableSettings_[0], (float)size.y * tableSettings_[1] },
-                       locale_.tableOut, locale_.tableIn, 10, 10, { tableSettings_[4], tableSettings_[5] },
-                       locale_.font);
+                       Locale::GetInstance()->tableOut, Locale::GetInstance()->tableIn, 10, 10, { tableSettings_[4], tableSettings_[5] },
+                       Locale::GetInstance()->font);
 
-    eventHandler = EventHandler(buttons_, ButtonSettings, texboxs_, textboxSettings_, table_, tableSettings_);
-}
-
-App::~App() {
-    for (auto u : buttons_) {
-        delete u;
-    }
-    for (auto u : texboxs_) {
-        delete u;
-    }
-    delete table_;
+    eventHandler = EventHandler(ButtonSettings, textboxSettings_, tableSettings_);
 }

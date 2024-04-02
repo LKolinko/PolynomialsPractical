@@ -6,6 +6,7 @@ public:
     Button() = default;
     Button(sf::Vector2f size, sf::Vector2f pos, sf::Color Back, sf::Color Other, sf::Color Passed, sf::Font& font,
            std::string btnText, float radius);
+    ~Button() = default;
 
     void SetOtherColor();
     void SetPassedColor();

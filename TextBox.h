@@ -6,6 +6,7 @@
 class TextBox {
 public:
     TextBox(sf::Vector2f size, sf::Vector2f pos, sf::Color color, sf::Color pressed, sf::Font& font, std::string title, float radius);
+    ~TextBox() = default;
     void SetPressed();
     void SetSimple();
     int getColor();

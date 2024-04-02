@@ -6,6 +6,7 @@
 class FSM {
 public:
     FSM(std::string a);
+    ~FSM() = default;
     bool is_end();
     std::pair<std::vector<int>, int> getNode();
 private:

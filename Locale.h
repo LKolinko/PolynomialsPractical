@@ -1,6 +1,9 @@
 #include "SFML/Graphics.hpp"
-
-class Locale {
+#include "Singleton.h"
+#include "Table.h"
+#include "Button.h"
+#include "TextBox.h"
+class Locale : public Singleton<Locale>{
 public:
     sf::Color button;
     sf::Color buttonOther;
@@ -10,8 +13,11 @@ public:
     sf::Color tableIn;
     sf::Color tableOut;
     sf::Font font;
+    std::vector<Button*> buttons_;
+    std::vector<TextBox*> texboxs_;
+    Table* table_;
 
-    Locale() {
+    void Init() {
         buttonOther = sf::Color(111, 146, 131);
         buttonPassed = sf::Color(105, 109, 125);
         button = sf::Color(141, 159, 135);
@@ -20,6 +26,15 @@ public:
         tableIn = sf::Color(152, 193, 217);
         tableOut = sf::Color(58, 183, 149);
         font.loadFromFile("Arial.ttf");
+    }
+    ~Locale() {
+        for (auto &u : buttons_) {
+            delete u;
+        }
+        for (auto &u : texboxs_) {
+            delete u;
+        }
+        delete table_;
     }
 private:
 

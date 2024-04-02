@@ -9,6 +9,7 @@ class Table {
 public:
     Table(sf::Vector2f size, sf::Vector2f pos, sf::Color Frame, sf::Color Cin,
           float FrameThickness, float radius, sf::Vector2f CellSZ, sf::Font& f);
+    ~Table() = default;
     void Draw(sf::RenderWindow& wnd);
     bool isMouseOver(sf::RenderWindow& window);
     void Scroll(std::pair<int, int> a);

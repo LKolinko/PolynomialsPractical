@@ -31,6 +31,13 @@ void Table::Draw(sf::RenderWindow &wnd) {
 
     for (int i = cnt + 1; (float)(i - cnt - 2) * CellSize.y < (float)table.getSize().y; ++i) {
 
+        if (std::find(fill.begin(), fill.end(), i - 1) != fill.end()) {
+            sf::RectangleShape blr({(float)table.getSize().x, CellSize.y - 2});
+            blr.setPosition({ 0, (float) (i - cnt - 1) * CellSize.y - (Start.y - CellSize.y * cnt) + 2} );
+            blr.setFillColor(sf::Color(118, 152, 179));
+            table.draw(blr);
+        }
+
         if (i <= data.size()) {
             sf::Text text;
             text.setFont(font);
@@ -96,4 +103,23 @@ void Table::SetPosition(sf::Vector2f pos) {
     position = { pos.x + ft / 2, pos.y + ft / 2 };
     out.SetPosition(pos);
     in.SetPosition(sf::Vector2f({ pos.x + ft, pos.y + ft }));
+}
+
+void Table::FillCeil(sf::RenderWindow* wnd) {
+    int mouseY = sf::Mouse::getPosition(*wnd).y;
+    int PosY = in.position.y;
+
+    int i = (mouseY - PosY + Start.y) / CellSize.y;
+
+    if (std::find(fill.begin(), fill.end(), i) == fill.end()) {
+        if (i < data.size()) {
+            fill.push_back(i);
+        }
+    } else {
+        fill.erase(std::find(fill.begin(), fill.end(), i));
+    }
+}
+
+std::vector<int> Table::GetFill() {
+    return fill;
 }

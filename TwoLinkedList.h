@@ -10,6 +10,7 @@ public:
     ~TwoLinkedList();
     TwoLinkedList(const TwoLinkedList& other);
     void PushBack(T val);
+    T GetFromInd(int ind);
     void Erase(T val);
     void EraseInd(int ind);
     void Clear();
@@ -34,6 +35,15 @@ private:
     node* root = nullptr;
     node* tail = nullptr;
 };
+
+template<typename T>
+T TwoLinkedList<T>::GetFromInd(int ind) {
+    auto u = root;
+    for (int i = 0; i != ind; ++i) {
+        u = u->next;
+    }
+    return u->val;
+}
 
 template<typename T>
 void TwoLinkedList<T>::Print() {
@@ -78,7 +88,6 @@ void TwoLinkedList<T>::Erase(T val) {
         if (u == root) {
             EraseHead();
         } else {
-
             if (u->prev) {
                 u->prev->next = u->next;
             }

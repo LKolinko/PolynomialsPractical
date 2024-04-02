@@ -1,5 +1,6 @@
 #include <vector>
 #include <set>
+#include <cmath>
 #include "FSM.h"
 #include "list.h"
 
@@ -10,9 +11,11 @@ public:
     ~Polinom() = default;
     Polinom(const Polinom& other);
     void Print();
+    std::string ToString();
     Polinom Derivative(char x);
     Polinom Derivative(int k, char x);
     Polinom& operator=(const Polinom& other);
+    bool operator==(Polinom& other);
     Polinom operator-();
     Polinom operator-(Polinom other);
     Polinom operator+(Polinom other);
@@ -24,7 +27,8 @@ public:
     Polinom operator*=(Polinom other);
     Polinom operator*=(int num);
     Polinom operator/=(Polinom other);
-
+    int ValueInPoint(std::vector<int>& values);
+    std::vector<int> getRoots();
 private:
     struct node {
         int k;

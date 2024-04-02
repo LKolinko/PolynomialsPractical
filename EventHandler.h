@@ -14,6 +14,9 @@ public:
     void scan(sf::RenderWindow* wnd);
     void ReWrite(sf::RenderWindow* wnd);
 private:
+    void AddPolinom();
+    void GetRoots();
+
     void Update_(sf::RenderWindow* wnd, sf::Event& event);
     std::vector<float> tableSettings_;
     std::vector<std::vector<float>> buttonsSettings_;

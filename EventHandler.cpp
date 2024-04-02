@@ -1,7 +1,9 @@
 //
 // Created by lkolinko on 3/30/24.
 //
+
 #include "EventHandler.h"
+#include "Database.h"
 #include <iostream>
 #include <utility>
 
@@ -36,6 +38,8 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
             auto u = Locale::GetInstance()->buttons_[i];
             if (u->isMouseOver(*wnd)) {
                 if (u->getColor() != 2) {
+                    if (i == 2) GetRoots();
+                    if (i == 8) AddPolinom();
                     IsUpdate = true;
                 }
                 u->SetPassedColor();
@@ -51,6 +55,10 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
                 IsUpdate = true;
                 u->SetSimple();
             }
+        }
+        if (Locale::GetInstance()->table_->isMouseOver(*wnd)) {
+            Locale::GetInstance()->table_->FillCeil(wnd);
+            IsUpdate = true;
         }
     }
     if (event.type == sf::Event::MouseButtonReleased) {
@@ -112,7 +120,6 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
 }
 
 void EventHandler::ReWrite(sf::RenderWindow *wnd) {
-    std::cout << "UPD" << '\n';
 
     wnd->clear(sf::Color::White);
 
@@ -137,4 +144,30 @@ EventHandler::EventHandler(std::vector<std::vector<float>>& buttonsSettings,
     tableSettings_ = tableSettings;
 }
 
+void EventHandler::AddPolinom() {
+    std::string str = Locale::GetInstance()->texboxs_[0]->get_text();
+    Polinom polinom;
+    try {
+        polinom = Polinom(str);
+    } catch (std::runtime_error) {
+        return;
+    }
+    str = polinom.ToString();
+    Locale::GetInstance()->table_->PushBack(str);
+    Database::GetInstance()->Add(polinom);
+}
+
+void EventHandler::GetRoots() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.empty()) {
+        return;
+    }
+    std::vector<int> res = Database::GetInstance()->GetPolinom(ind.front()).getRoots();
+    std::string text;
+    for (int i = 0; i < (int)res.size(); ++i) {
+        text += std::to_string(res[i]);
+        text.push_back(' ');
+    }
+    Locale::GetInstance()->texboxs_[1]->SetText(text);
+}
 

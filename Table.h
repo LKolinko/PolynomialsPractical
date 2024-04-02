@@ -18,8 +18,11 @@ public:
     void PushBack(std::string str);
     void SetSize(sf::Vector2f size);
     void SetPosition(sf::Vector2f position);
+    void FillCeil(sf::RenderWindow* wnd);
+    std::vector<int> GetFill();
     void Remove(int ind);
 private:
+    std::vector<int> fill;
     float maxSize;
     sf::Font font;
     sf::Color Bad_color;

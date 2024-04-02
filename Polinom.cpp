@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Polinom.h"
 
 
@@ -147,6 +148,67 @@ Polinom Polinom::Derivative(char x) {
             auto newAlph = u->val.alph;
             newAlph[x - 'a']--;
             res.data_.PushBack(node(newAlph, u->val.k * u->val.alph[x - 'a']));
+        }
+    }
+    return res;
+}
+
+std::string Polinom::ToString() {
+    std::string str;
+    std::stringstream ss;
+    for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
+        ss << u->val;
+    }
+    ss >> str;
+    return str;
+}
+
+int Polinom::ValueInPoint(std::vector<int> &values) {
+    int res = 0;
+    for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
+        int tec = u->val.k;
+        for (int i = 0; i < 26; ++i) {
+            tec *= pow(values[i], u->val.alph[i]);
+        }
+        res += tec;
+    }
+    return res;
+}
+
+bool Polinom::operator==(Polinom &other) {
+    return data_ == other.data_;
+}
+
+std::vector<int> Polinom::getRoots() {
+    std::vector<int> res;
+    int free;
+    int x;
+    auto u = data_.getRoot();
+    while (u->next != nullptr) {
+        int cnt = 0;
+        for (int i = 0; i < 26; ++i) {
+            if (u->val.alph[i]) {
+                ++cnt;
+                x = i;
+            }
+            if (cnt >= 2) {
+                throw std::runtime_error("NO, hohoho");
+            }
+        }
+        u = u->next;
+    }
+    for (auto e : u->val.alph) {
+        if (e) {
+            throw std::runtime_error("NO, hohoho");
+        }
+    }
+    free = u->val.k;
+    for (int i = -abs(free); i <= abs(free); ++i) {
+        if (i == 0) continue;
+        std::vector<int> values(26, 0);
+        values[x] = i;
+        if (free % i == 0 && ValueInPoint(values) == 0) {
+            res.push_back(i);
         }
     }
     return res;

@@ -17,6 +17,7 @@ public:
     bool isMousOver(sf::RenderWindow& wnd);
     void Draw(sf::RenderWindow& wnd);
     void Clear();
+    void SetText(std::string& str);
     std::string get_text();
 private:
     bool is_title = true;

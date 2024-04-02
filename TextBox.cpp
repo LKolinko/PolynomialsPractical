@@ -133,5 +133,8 @@ void TextBox::RemoveSimbol() {
     text_.setString(data_);
 }
 
-
+void TextBox::SetText(std::string &str) {
+    data_ = str;
+    text_.setString(str);
+}
 

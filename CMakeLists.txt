@@ -26,9 +26,9 @@ add_executable(PolinomPractice main.cpp
         RoundedRectangle.cpp
         Button.cpp
         TextBox.cpp
-        TextBox.cpp
-        TextBox.cpp
         Table.cpp
-        TwoLinkedList.h)
+        TwoLinkedList.h
+        Database.cpp
+        Database.h)
 
 target_link_libraries(PolinomPractice PRIVATE sfml-graphics)

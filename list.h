@@ -26,6 +26,7 @@ public:
     void Sort();
     void Clear();
     list &operator=(list other);
+    bool operator==(list& other);
     node* getRoot();
 private:
     node* root = nullptr;
@@ -41,6 +42,23 @@ private:
     void Delete(node* p);
     node* DeleteLast(node* p);
 };
+
+template<typename T>
+bool list<T>::operator==(list &other) {
+    auto u = root;
+    auto e = other.root;
+    while (u != nullptr && e != nullptr) {
+        if (u->val != e->val) {
+            return false;
+        }
+        u = u->next;
+        e = e->next;
+    }
+    if (u != nullptr || e != nullptr) {
+        return false;
+    }
+    return true;
+}
 
 template<typename T>
 typename list<T>::node *list<T>::getRoot() {

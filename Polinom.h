@@ -31,7 +31,7 @@ public:
     std::vector<int> getRoots();
 private:
     struct node {
-        int k;
+        float k;
         std::vector<int> alph;
         node() {
             k = 0;
@@ -73,6 +73,23 @@ private:
                 return k > other.k;
             }
 
+        }
+        node operator/(node other) {
+            node res;
+            float newK = k / other.k;
+            res.k = newK;
+
+            for (int i = 0; i < 26; ++i) {
+                res.alph[i] = alph[i] - other.alph[i];
+            }
+
+            for (int i = 0; i < 26; ++i) {
+                if (res.alph[i] < 0) {
+                    res.k = 0;
+                }
+            }
+
+            return res;
         }
         node& operator=(node other) {
             alph = other.alph;

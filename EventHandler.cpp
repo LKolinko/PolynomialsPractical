@@ -47,9 +47,11 @@ void EventHandler::Update_(sf::RenderWindow *wnd, sf::Event& event) {
                     if (i == 5) Subtraction();
                     if (i == 6) Multiplication();
                     if (i == 7) Division();
-                    if (i == 8) AddPolinom();
-                    if (i == 9) Addition();
+                    if (i == 8) AddPolinom(0);
+                    if (i == 9) AddPolinom(1);
                     if (i == 10) Delete();
+                    if (i == 11) Save();
+                    if (i == 12) Load();
                     IsUpdate = true;
                 }
                 u->SetPassedColor();
@@ -154,12 +156,14 @@ EventHandler::EventHandler(std::vector<std::vector<float>>& buttonsSettings,
     tableSettings_ = tableSettings;
 }
 
-void EventHandler::AddPolinom() {
-    std::string str = Locale::GetInstance()->texboxs_[0]->get_text();
+void EventHandler::AddPolinom(int ind) {
+    std::string str = Locale::GetInstance()->texboxs_[ind]->get_text();
     Polinom polinom;
     try {
         polinom = Polinom(str);
-    } catch (std::runtime_error) {
+    } catch (const std::runtime_error& e) {
+        std::string ans = e.what();
+        Locale::GetInstance()->texboxs_[1]->SetText(ans);
         return;
     }
     str = polinom.ToString();
@@ -253,9 +257,15 @@ void EventHandler::ValueInPoint() {
     std::string str = Locale::GetInstance()->texboxs_[0]->get_text();
 
     std::stringstream ss(str);
-    std::vector<int> values(26);
-    for (int i = 0; i < 26; ++i) {
-        ss >> values[i];
+    std::vector<int> values(26, 0);
+    std::string in;
+    while (ss >> in) {
+        char x = in.front();
+        std::reverse(in.begin(), in.end());
+        in.pop_back();
+        in.pop_back();
+        std::reverse(in.begin(), in.end());
+        values[x - 'a'] = std::stoi(in);
     }
 
     Polinom polinom = Database::GetInstance()->GetPolinom(ind[0]);
@@ -281,6 +291,42 @@ void EventHandler::Derivative() {
 }
 
 void EventHandler::Division() {
+    auto ind = Locale::GetInstance()->table_->GetFill();
+    if (ind.size() < 2) {
+        return;
+    }
+    Polinom first = Database::GetInstance()->GetPolinom(ind[0]);
+    Polinom second = Database::GetInstance()->GetPolinom(ind[1]);
+    Polinom res;
+    try {
+        res = first / second;
+    } catch (const std::runtime_error& e) {
+        std::string error = e.what();
+        Locale::GetInstance()->texboxs_[1]->SetText(error);
+        return;
+    }
+    Polinom ost = first - res * second;
+    std::string ans1 = res.ToString(), ans2 = ost.ToString();
+    Locale::GetInstance()->texboxs_[0]->SetText(ans1);
+    Locale::GetInstance()->texboxs_[1]->SetText(ans2);
+}
 
+void EventHandler::Save() {
+    std::string name = Locale::GetInstance()->texboxs_[2]->get_text();
+    Database::GetInstance()->SaveToFile(name);
+}
+
+void EventHandler::Load() {
+    std::string name = Locale::GetInstance()->texboxs_[3]->get_text();
+    try {
+        Database::GetInstance()->LoadFromFile(name);
+    } catch (...) {
+        return;
+    }
+    std::ifstream in(name);
+    std::string a;
+    while (in >> a) {
+        Locale::GetInstance()->table_->PushBack(a);
+    }
 }
 

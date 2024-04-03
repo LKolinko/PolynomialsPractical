@@ -23,6 +23,8 @@ App::App() {
             { 0.33, 0.01, 0.2, 0.1 },
             { 0.33, 0.13, 0.2, 0.1 },
             { 0.165, 0.61, 0.145, 0.1 },
+            { 0.01, 0.73, 0.145, 0.1 },
+            { 0.01, 0.85, 0.145, 0.1 },
     };
     buttonsTitles_ = {
             "value at point",
@@ -36,6 +38,8 @@ App::App() {
             "add",
             "add",
             "del",
+            "save",
+            "load"
     };
     sf::Vector2u size = Screen::GetInstance()->window->getSize();
     for (int i = 0; i < (int)ButtonSettings.size(); ++i) {
@@ -49,11 +53,15 @@ App::App() {
     // textboxs
     textboxSettings_ = {
             { 0.55, 0.01, 0.43, 0.1 },
-            { 0.55, 0.13, 0.43, 0.1 }
+            { 0.55, 0.13, 0.43, 0.1 },
+            { 0.165, 0.73, 0.145, 0.1 },
+            { 0.165, 0.85, 0.145, 0.1 },
     };
     texboxTitles_ = {
             "Input:",
             "Result:",
+            "out Name:",
+            "in Name:"
     };
     for (int i = 0; i < (int)textboxSettings_.size(); ++i) {
         auto u = textboxSettings_[i];

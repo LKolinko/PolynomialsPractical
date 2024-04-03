@@ -77,7 +77,7 @@ std::pair<std::vector<int>, int> FSM::getNode() {
             } else if (str_[ind] >= 'a' && str_[ind] <= 'z' && cnt != 0) {
                 alph[teck - 'a'] = cnt;
                 state = 2;
-            } else if (str_[ind] == '-' || str_[ind] == '+') {
+            } else if ((str_[ind] == '-' || str_[ind] == '+') && cnt != 0) {
                 alph[teck - 'a'] = cnt;
                 state = 0;
                 break;

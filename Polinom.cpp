@@ -213,3 +213,52 @@ std::vector<int> Polinom::getRoots() {
     }
     return res;
 }
+
+Polinom Polinom::operator/(Polinom other) {
+
+    for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
+        int cnt = 0;
+        for (int i = 0; i < 26; ++i) {
+            if (u->val.alph[i]) {
+                ++cnt;
+            }
+        }
+        if (cnt > 1) {
+            throw std::runtime_error("more than one variable");
+        }
+    }
+
+
+    for (auto u = other.data_.getRoot(); u != nullptr; u = u->next) {
+        int cnt = 0;
+        for (int i = 0; i < 26; ++i) {
+            if (u->val.alph[i]) {
+                ++cnt;
+            }
+        }
+        if (cnt > 1) {
+            throw std::runtime_error("more than one variable");
+        }
+    }
+
+    Polinom res;
+    Polinom copy = *this;
+    while (true) {
+        if (copy.data_.getRoot() == nullptr) {
+            break;
+        }
+        node resNode = copy.data_.getRoot()->val / other.data_.getRoot()->val;
+
+        if (resNode.k == 0) {
+            break;
+        }
+
+        res.data_.PushBack(resNode);
+        Polinom del;
+        del.data_.PushBack(resNode);
+
+        copy -= other * del;
+
+    }
+    return res;
+}

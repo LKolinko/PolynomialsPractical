@@ -6,16 +6,6 @@
 template<typename T>
 class TwoLinkedList {
 public:
-    TwoLinkedList() = default;
-    ~TwoLinkedList();
-    TwoLinkedList(const TwoLinkedList& other);
-    void PushBack(T val);
-    T GetFromInd(int ind);
-    void Erase(T val);
-    void EraseInd(int ind);
-    void Clear();
-    void Print();
-private:
     struct node {
         T val;
         node* next;
@@ -30,11 +20,27 @@ private:
             next = nullptr;
         }
     };
+    TwoLinkedList() = default;
+    ~TwoLinkedList();
+    TwoLinkedList(const TwoLinkedList& other);
+    void PushBack(T val);
+    T GetFromInd(int ind);
+    void Erase(T val);
+    void EraseInd(int ind);
+    void Clear();
+    void Print();
+    node* GetRoot();
+private:
     node* find(T val);
     void EraseHead();
     node* root = nullptr;
     node* tail = nullptr;
 };
+
+template<typename T>
+typename TwoLinkedList<T>::node *TwoLinkedList<T>::GetRoot() {
+    return root;
+}
 
 template<typename T>
 T TwoLinkedList<T>::GetFromInd(int ind) {

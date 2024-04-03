@@ -14,7 +14,7 @@ public:
     void scan(sf::RenderWindow* wnd);
     void ReWrite(sf::RenderWindow* wnd);
 private:
-    void AddPolinom();
+    void AddPolinom(int ind);
     void GetRoots();
     void Delete();
     void Comparison();
@@ -24,6 +24,8 @@ private:
     void ValueInPoint();
     void Derivative();
     void Division();
+    void Save();
+    void Load();
 
     void Update_(sf::RenderWindow* wnd, sf::Event& event);
     std::vector<float> tableSettings_;

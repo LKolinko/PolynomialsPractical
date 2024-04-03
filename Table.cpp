@@ -126,4 +126,5 @@ std::vector<int> Table::GetFill() {
 
 void Table::Remove(int ind) {
     data.erase(data.begin() + ind);
+    fill.erase(std::find(fill.begin(), fill.end(), ind));
 }

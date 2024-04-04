@@ -51,10 +51,11 @@ std::pair<std::vector<int>, int> FSM::getNode() {
             }
         } else if (state == 2) {
             if (str_[ind] >= 'a' && str_[ind] <= 'z') {
-                alph[str_[ind] - 'a'] = 1;
+                alph[str_[ind] - 'a'] += 1;
                 teck = str_[ind];
                 state = 2;
             } else if (str_[ind] == '^') {
+                --alph[teck -'a'];
                 cnt = 0;
                 state = 3;
             } else if (str_[ind] == '-' || str_[ind] == '+') {
@@ -72,14 +73,17 @@ std::pair<std::vector<int>, int> FSM::getNode() {
                 cnt += (str_[ind] - '0');
                 ++ind;
                 if (ind == str_.size()) {
-                    alph[teck - 'a'] = cnt;
+                    alph[teck - 'a'] += cnt;
+                    cnt = 0;
                 }
             } else if (str_[ind] >= 'a' && str_[ind] <= 'z' && cnt != 0) {
-                alph[teck - 'a'] = cnt;
+                alph[teck - 'a'] += cnt;
+                cnt = 0;
                 state = 2;
             } else if ((str_[ind] == '-' || str_[ind] == '+') && cnt != 0) {
-                alph[teck - 'a'] = cnt;
+                alph[teck - 'a'] += cnt;
                 state = 0;
+                cnt = 0;
                 break;
             } else {
                 std::string error = "expected number, received: ";

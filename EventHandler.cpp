@@ -158,6 +158,11 @@ EventHandler::EventHandler(std::vector<std::vector<float>>& buttonsSettings,
 
 void EventHandler::AddPolinom(int ind) {
     std::string str = Locale::GetInstance()->texboxs_[ind]->get_text();
+
+    if (str.empty()) {
+        return;
+    }
+
     Polinom polinom;
     try {
         polinom = Polinom(str);
@@ -176,7 +181,14 @@ void EventHandler::GetRoots() {
     if (ind.empty()) {
         return;
     }
-    std::vector<int> res = Database::GetInstance()->GetPolinom(ind.front()).getRoots();
+    std::vector<int> res;
+    try {
+        res = Database::GetInstance()->GetPolinom(ind.front()).getRoots();
+    } catch (const std::runtime_error& e) {
+        std::string ans = e.what();
+        Locale::GetInstance()->texboxs_[1]->SetText(ans);
+        return;
+    }
     std::string text;
     for (int i = 0; i < (int)res.size(); ++i) {
         text += std::to_string(res[i]);
@@ -260,12 +272,23 @@ void EventHandler::ValueInPoint() {
     std::vector<int> values(26, 0);
     std::string in;
     while (ss >> in) {
+        if (in.size() <= 2 || !(in[0] >= 'a' && in[0] <= 'z') || (in[1] != '=')) {
+            std::string ans = "error";
+            Locale::GetInstance()->texboxs_[1]->SetText(ans);
+            return;
+        }
         char x = in.front();
         std::reverse(in.begin(), in.end());
         in.pop_back();
         in.pop_back();
         std::reverse(in.begin(), in.end());
-        values[x - 'a'] = std::stoi(in);
+        try {
+            values[x - 'a'] = std::stoi(in);
+        } catch (...) {
+            std::string ans = "error";
+            Locale::GetInstance()->texboxs_[1]->SetText(ans);
+            return;
+        }
     }
 
     Polinom polinom = Database::GetInstance()->GetPolinom(ind[0]);

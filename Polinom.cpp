@@ -107,6 +107,7 @@ Polinom Polinom::operator*(Polinom other) {
     Polinom res;
     for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
         for (auto e = other.data_.getRoot(); e != nullptr; e = e->next) {
+            node a = (u->val * e->val);
             res.data_.PushBack(u->val * e->val);
         }
     }
@@ -156,10 +157,20 @@ Polinom Polinom::Derivative(char x) {
 std::string Polinom::ToString() {
     std::string str;
     std::stringstream ss;
+    if (data_.getRoot() == nullptr) {
+        ss << 0;
+    }
     for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
         ss << u->val;
     }
     ss >> str;
+    if (str.front() == '+') {
+        std::string ans;
+        for (int i = 1; i < str.size(); ++i) {
+            ans.push_back(str[i]);
+        }
+        str = ans;
+    }
     return str;
 }
 
@@ -199,7 +210,11 @@ std::vector<int> Polinom::getRoots() {
     }
     for (auto e : u->val.alph) {
         if (e) {
-            throw std::runtime_error("NO, hohoho");
+            free = 0;
+            std::vector<int> values(26, 0);
+            if (ValueInPoint(values) == 0) {
+                return { 0 };
+            }
         }
     }
     free = u->val.k;
@@ -215,6 +230,10 @@ std::vector<int> Polinom::getRoots() {
 }
 
 Polinom Polinom::operator/(Polinom other) {
+
+    if (other.data_.getRoot() == nullptr) {
+        throw std::runtime_error("stupid");
+    }
 
     for (auto u = data_.getRoot(); u != nullptr; u = u->next) {
         int cnt = 0;

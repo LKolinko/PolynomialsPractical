@@ -31,7 +31,7 @@ public:
     std::vector<int> getRoots();
 private:
     struct node {
-        float k;
+        double k;
         std::vector<int> alph;
         node() {
             k = 0;
@@ -103,10 +103,10 @@ private:
             return !(*this == other);
         }
         node operator*(node& other) {
-            node res;
-            res.k = k * other.k;
+            node res = *this;
+            res.k *= other.k;
             for (int i = 0; i < 26; ++i) {
-                res.alph[i] = alph[i] + other.alph[i];
+                res.alph[i] += other.alph[i];
             }
             return res;
         }
@@ -125,12 +125,49 @@ private:
             *this = (*this * num);
             return *this;
         }
-        friend std::ostream &operator<<(std::ostream& out, const Polinom::node& p) {
-            if (p.k < 0) {
-                out << p.k;
-            } else {
-                out << "+" << p.k;
+        friend std::ostream &operator<<(std::ostream& out, Polinom::node& p) {
+
+
+
+            bool flag = true;
+            for (int i = 0; i < 26; ++i) {
+                if (p.alph[i]) {
+                    flag = false;
+                    break;
+                }
             }
+
+            if (int(p.k) == p.k) {
+                if (fabs(p.k) == 1 && !flag) {
+                    if (p.k < 0) {
+                        out << "-";
+                    } else {
+                        out << "+";
+                    }
+                } else {
+                    if (p.k < 0) {
+                        out << int(p.k);
+                    } else {
+                        out << "+" << int(p.k);
+                    }
+                }
+            } else {
+                if (fabs(p.k) == 1 && !flag) {
+                    if (p.k < 0) {
+                        out << "-";
+                    } else {
+                        out << "+";
+                    }
+                } else {
+                    if (p.k < 0) {
+                        out << p.k;
+                    } else {
+                        out << "+" << p.k;
+                    }
+                }
+            }
+
+
             for (int i = 0; i < 26; ++i) {
                 if (p.alph[i] == 1) {
                     out << char('a' + i);

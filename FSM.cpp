@@ -93,6 +93,12 @@ std::pair<std::vector<int>, int> FSM::getNode() {
         }
     }
 
+    if ((str_[ind] == '-' || str_[ind] == '+') && ind == str_.size() - 1) {
+        std::string error = "expected null, received: ";
+        error.push_back(str_[ind]);
+        throw std::runtime_error(error);
+    }
+
     k *= sign;
     return { alph, k };
 }
